@@ -7,9 +7,7 @@ import pandas as pd
 # Initialize FastAPI engine
 app = FastAPI(title="IoT-Sentinel: Industrial Predictive Maintenance API")
 
-# Load your trained XGBoost model from 
-Google Colab
-
+# Load your trained XGBoost model from Google Colab
 with open("predictive_maintenance_model.pkl", "rb") as file:
     model = pickle.load(file)
 
@@ -33,8 +31,8 @@ def predict_machine_status(data: SensorPayload):
     ]], columns=feature_names)
     
     # Run inference calculations
-    prediction = int(model.predict(input_data))
-    probability = float(model.predict_proba(input_data)[:, 1])
+    prediction = int(model.predict(input_data)[0])
+    probability = float(model.predict_proba(input_data)[0, 1])
     
     # Map the numerical class binary back to operational strings
     status = "Critical Failure Risk - Action Required" if prediction == 1 else "Normal Operations"
